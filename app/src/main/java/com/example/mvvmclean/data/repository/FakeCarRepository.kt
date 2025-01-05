@@ -2,8 +2,9 @@ package com.example.mvvmclean.data.repository
 
 import com.example.mvvmclean.domain.model.Car
 import com.example.mvvmclean.domain.repository.CarRepository
+import javax.inject.Inject
 
-class FakeCarRepository : CarRepository {
+class FakeCarRepository @Inject constructor(): CarRepository {
     private val cars = mutableListOf(
         Car(1, "Model S", "Tesla", "$89,990", "https://via.placeholder.com/150"),
         Car(2, "Mustang", "Ford", "$55,300", "https://via.placeholder.com/150"),

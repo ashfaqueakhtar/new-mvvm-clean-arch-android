@@ -16,9 +16,10 @@ import com.example.mvvmclean.data.repository.FakeCarRepository
 import com.example.mvvmclean.domain.usecase.GetCarListUseCase
 import com.example.mvvmclean.presentation.list.vm.CarListViewModel
 import com.example.mvvmclean.presentation.list.vm.CartListViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class CarListFragment : Fragment() {
 
     private lateinit var binding: FragmentCarListBinding
@@ -27,10 +28,10 @@ class CarListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        val getCarListUseCase =
+        /*val getCarListUseCase =
             GetCarListUseCase(FakeCarRepository()) // Provide your use case instance
-        val factory = CartListViewModelFactory(getCarListUseCase)
-        viewModel = ViewModelProvider(this, factory)[CarListViewModel::class.java]
+        val factory = CartListViewModelFactory(getCarListUseCase)*/
+        viewModel = ViewModelProvider(this, /*factory*/)[CarListViewModel::class.java]
 
         binding = FragmentCarListBinding.inflate(inflater, container, false)
         val view: View = binding.root

@@ -4,13 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mvvmclean.domain.model.Car
 import com.example.mvvmclean.domain.usecase.GetCarListUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-
-class CarListViewModel constructor(
+@HiltViewModel
+class CarListViewModel @Inject constructor(
     private val getCarListUseCase: GetCarListUseCase
 ) : ViewModel() {
     private val _carList = MutableStateFlow<List<Car>>(emptyList())

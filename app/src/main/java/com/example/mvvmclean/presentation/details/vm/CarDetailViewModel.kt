@@ -6,14 +6,16 @@ import androidx.lifecycle.viewModelScope
 import com.example.mvvmclean.domain.model.Car
 import com.example.mvvmclean.domain.usecase.GetCarDetailsUseCase
 import com.example.mvvmclean.domain.usecase.UpdateCarDetailsUseCase
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
-class CarDetailViewModel  constructor(
+@HiltViewModel
+class CarDetailViewModel @Inject constructor(
     private val getCarDetailsUseCase: GetCarDetailsUseCase,
     private val updateCarDetailsUseCase: UpdateCarDetailsUseCase
 ) : ViewModel() {
@@ -31,7 +33,7 @@ class CarDetailViewModel  constructor(
         viewModelScope.launch {
             updateCarDetailsUseCase.execute(updatedCar)
             _carDetails.value = updatedCar
-            Log.d("TAG","${updatedCar.name} ${updatedCar.brand} ${updatedCar.price}")
+            Log.d("TAG", "${updatedCar.name} ${updatedCar.brand} ${updatedCar.price}")
         }
     }
 }

@@ -16,11 +16,12 @@ import com.example.mvvmclean.domain.usecase.GetCarDetailsUseCase
 import com.example.mvvmclean.domain.usecase.UpdateCarDetailsUseCase
 import com.example.mvvmclean.presentation.details.vm.CarDetailViewModel
 import com.example.mvvmclean.presentation.details.vm.CartDetailsViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class CarDetailFragment : Fragment() {
-    lateinit var viewModel: CarDetailViewModel
+    private lateinit var viewModel: CarDetailViewModel
     private lateinit var binding: FragmentCarDetailBinding
 
     override fun onCreateView(
@@ -32,7 +33,7 @@ class CarDetailFragment : Fragment() {
         val getCarDetailsUseCase = GetCarDetailsUseCase(repo)
         val updateCarDetailsUseCase = UpdateCarDetailsUseCase(repo)
         val factory = CartDetailsViewModelFactory(getCarDetailsUseCase, updateCarDetailsUseCase)
-        viewModel = ViewModelProvider(this, factory)[CarDetailViewModel::class.java]
+        viewModel = ViewModelProvider(this/*, factory*/)[CarDetailViewModel::class.java]
 
         binding = FragmentCarDetailBinding.inflate(inflater, container, false)
 
