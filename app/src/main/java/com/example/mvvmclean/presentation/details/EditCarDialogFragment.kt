@@ -1,16 +1,15 @@
 package com.example.mvvmclean.presentation.details
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import com.example.mvvmclean.databinding.DialogEditCarBinding
 import com.example.mvvmclean.domain.model.Car
 
-class EditCarDialogFragment(
-) : DialogFragment() {
+class EditCarDialogFragment : DialogFragment() {
 
     private lateinit var binding: DialogEditCarBinding
 
@@ -42,8 +41,14 @@ class EditCarDialogFragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DialogEditCarBinding.inflate(inflater, container, false)
 
+        dialog?.let {
+            it.window?.let { w->
+                w.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+            }
+        }
+
+        binding = DialogEditCarBinding.inflate(inflater, container, false)
         val v = binding.root
 
         return v
