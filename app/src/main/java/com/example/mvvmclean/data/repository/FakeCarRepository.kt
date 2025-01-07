@@ -16,8 +16,10 @@ class FakeCarRepository @Inject constructor(): CarRepository {
 
     override suspend fun getCarDetails(carId: Int): Car = cars.first { it.id == carId }
 
-    override suspend fun updateCarDetails(car: Car) {
-        val index = cars.indexOfFirst { it.id == car.id }
-        if (index != -1) cars[index] = car
+    override suspend fun updateCarDetails(car: Car?) {
+        car?.let {c->
+            val index = cars.indexOfFirst { it.id == c.id }
+            if (index != -1) cars[index] = c
+        }
     }
 }
