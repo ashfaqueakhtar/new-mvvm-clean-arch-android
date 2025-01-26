@@ -1,5 +1,10 @@
 package com.example.mvvmclean.appDi
 
+import com.example.mvvmclean.config.network.ApiService
+import com.example.mvvmclean.data.repository.AuthRepositoryImpl
+import com.example.mvvmclean.data.repository.FakeCarRepository
+import com.example.mvvmclean.domain.repository.CarRepository
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,7 +18,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface NetworkModule {
+object NetworkModule {
 
     @Provides
     @Singleton
@@ -43,7 +48,11 @@ interface NetworkModule {
 
     /*@Provides
     @Singleton
-    fun provideUserApiService(retrofit: Retrofit): UserApiService {
-        return retrofit.create(UserApiService::class.java)
-    }*/
+    abstract fun ApiService(authRepositoryImpl: AuthRepositoryImpl) : ApiService*/
+
+    @Provides
+    @Singleton
+    fun provideApiService(retrofit: Retrofit): ApiService {
+        return retrofit.create(ApiService::class.java)
+    }
 }

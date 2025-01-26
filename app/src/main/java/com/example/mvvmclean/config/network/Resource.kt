@@ -6,11 +6,12 @@ sealed class Resource<T>(
     val message: String? = null,
     val statusCode: Int? = null,
 ) {
-    class Success<T>(data: T?, message: String?) :
+    class Success<T>(data: T? = null, message: String? = null) :
         Resource<T>(status = Status.SUCCESS, data = data, message = message)
 
-    class Error<T>(data: T?, message: String?, statusCode: Int?) :
+    class Error<T>(data: T? = null , message: String? = null, statusCode: Int? = null) :
         Resource<T>(status = Status.ERROR, data = data, message = message, statusCode = statusCode)
 
-    class Loading<T>(data: T?) : Resource<T>(status = Status.LOADING, data = data, message = null)
+    class Loading<T>() :
+        Resource<T>(status = Status.LOADING, data = null, message = null)
 }
