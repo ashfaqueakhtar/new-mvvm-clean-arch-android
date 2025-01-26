@@ -6,5 +6,5 @@ import javax.inject.Inject
 
 class GetCarListUseCase  @Inject constructor(private val repository: CarRepository) {
     //Dependency injection with constructor
-    suspend fun execute(): List<Car> = repository.getCarList()
+    suspend fun execute(): List<Car>? = repository.getCarList()
 }

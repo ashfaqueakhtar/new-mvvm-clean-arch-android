@@ -12,10 +12,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.mvvmclean.R
 import com.example.mvvmclean.databinding.FragmentCarListBinding
-import com.example.mvvmclean.data.repository.FakeCarRepository
-import com.example.mvvmclean.domain.usecase.GetCarListUseCase
 import com.example.mvvmclean.presentation.list.vm.CarListViewModel
-import com.example.mvvmclean.presentation.list.vm.CartListViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -34,10 +31,11 @@ class CarListFragment : Fragment() {
         viewModel = ViewModelProvider(this, /*factory*/)[CarListViewModel::class.java]
 
         binding = FragmentCarListBinding.inflate(inflater, container, false)
-        val view: View = binding.root
 
-        return view
+        return binding.root
     }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -55,7 +53,11 @@ class CarListFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.carList.collect { cars -> adapter.submitList(cars) }
+                viewModel.carList.collect { cars ->
+                    cars?.let {c->
+                        adapter.submitList(c)
+                    }
+                }
             }
         }
     }

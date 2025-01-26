@@ -15,11 +15,16 @@ import javax.inject.Inject
 class CarListViewModel @Inject constructor(
     private val getCarListUseCase: GetCarListUseCase
 ) : ViewModel() {
-    private val _carList = MutableStateFlow<List<Car>>(emptyList())
-    val carList: StateFlow<List<Car>> = _carList.asStateFlow()
+    private val _carList = MutableStateFlow<List<Car>?>(emptyList())
+    val carList: StateFlow<List<Car>?> = _carList.asStateFlow()
 
     init {
         viewModelScope.launch {
+
+            /*getCarListUseCase.execute()?.let {
+                _carList.value = it
+            }*/
+
             _carList.value = getCarListUseCase.execute()
         }
     }
