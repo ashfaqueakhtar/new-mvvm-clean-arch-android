@@ -1,10 +1,7 @@
 package com.example.mvvmclean.appDi
 
+import com.example.mvvmclean.BuildConfig
 import com.example.mvvmclean.config.network.ApiService
-import com.example.mvvmclean.data.repository.AuthRepositoryImpl
-import com.example.mvvmclean.data.repository.FakeCarRepository
-import com.example.mvvmclean.domain.repository.CarRepository
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,6 +10,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 
@@ -33,6 +31,9 @@ object NetworkModule {
     fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
+            .connectTimeout(15, TimeUnit.SECONDS)
+            .readTimeout(15, TimeUnit.SECONDS)
+            .writeTimeout(15, TimeUnit.SECONDS)
             .build()
     }
 
@@ -40,15 +41,11 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://api.example.com/")
+            .baseUrl(BuildConfig.BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
-
-    /*@Provides
-    @Singleton
-    abstract fun ApiService(authRepositoryImpl: AuthRepositoryImpl) : ApiService*/
 
     @Provides
     @Singleton

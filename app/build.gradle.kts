@@ -21,15 +21,42 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
     buildTypes {
         release {
+            buildConfigField("String", "BASE_URL", "\"https://reqres.in/release/\"")
+            applicationIdSuffix = ".release"
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
+        debug {
+            buildConfigField("String", "BASE_URL", "\"https://reqres.in/\"")
+            applicationIdSuffix = ".debug"
+            isMinifyEnabled = false
+        }
     }
+
+    flavorDimensions += "environment"
+    productFlavors {
+        create("development") {
+            dimension = "environment"
+            buildConfigField("String", "BASE_URL", "\"https://reqres.in/\"")
+        }
+        create("staging") {
+            dimension = "environment"
+            buildConfigField("String", "BASE_URL", "\"https://reqres.in/\"")
+        }
+        create("production") {
+            dimension = "environment"
+            buildConfigField("String", "BASE_URL", "\"https://reqres.in/release/\"")
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8

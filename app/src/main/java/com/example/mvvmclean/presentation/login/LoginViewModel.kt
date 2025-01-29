@@ -7,7 +7,9 @@ import com.example.mvvmclean.config.network.Status
 import com.example.mvvmclean.domain.model.auth.LoginRequest
 import com.example.mvvmclean.domain.usecase.login.DoLoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,11 +18,20 @@ class LoginViewModel @Inject constructor(
     private val doLoginUseCase: DoLoginUseCase
 ) : ViewModel() {
 
+    private val _status = MutableStateFlow<Status>(Status.IDLE);
+    var status : StateFlow<Status> = _status.asStateFlow()
 
-    fun loginApiCall(email: String = "aaaa@gamil.com", password: String = "abx") {
+    fun onSubmitCall(){
+        Log.d("ON TAP","CLICKED HERE")
+        _status.value = Status.LOADING
+        loginApiCall()
+        _status.value = Status.SUCCESS
+    }
+    private fun loginApiCall(email: String = "eve.holt@reqres.in", password: String = "cityslicka") {
         viewModelScope.launch {
             val req = LoginRequest(email = email, password = password)
             doLoginUseCase.execute(req).collect() {
+                //_status.value = it.status ?: Status.IDLE
                 when (it.status) {
                     Status.LOADING -> {
                         Log.d("LoginViewModel", "STATUS => LOADING")
