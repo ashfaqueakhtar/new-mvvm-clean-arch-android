@@ -18,20 +18,19 @@ class LoginViewModel @Inject constructor(
     private val doLoginUseCase: DoLoginUseCase
 ) : ViewModel() {
 
-    private val _status = MutableStateFlow<Status>(Status.IDLE);
+    private val _status = MutableStateFlow(Status.IDLE);
     var status : StateFlow<Status> = _status.asStateFlow()
 
     fun onSubmitCall(){
         Log.d("ON TAP","CLICKED HERE")
-        _status.value = Status.LOADING
         loginApiCall()
-        _status.value = Status.SUCCESS
     }
+
     private fun loginApiCall(email: String = "eve.holt@reqres.in", password: String = "cityslicka") {
         viewModelScope.launch {
             val req = LoginRequest(email = email, password = password)
             doLoginUseCase.execute(req).collect() {
-                //_status.value = it.status ?: Status.IDLE
+                _status.value = it.status?:Status.IDLE
                 when (it.status) {
                     Status.LOADING -> {
                         Log.d("LoginViewModel", "STATUS => LOADING")
