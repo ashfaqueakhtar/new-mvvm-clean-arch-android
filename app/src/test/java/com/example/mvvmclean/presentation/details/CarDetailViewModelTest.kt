@@ -1,4 +1,4 @@
-package com.example.mvvmclean
+package com.example.mvvmclean.presentation.details
 
 import com.example.mvvmclean.domain.model.Car
 import com.example.mvvmclean.domain.usecase.GetCarDetailsUseCase
