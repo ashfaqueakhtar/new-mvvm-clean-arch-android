@@ -120,5 +120,5 @@ dependencies {
     kaptTest("com.google.dagger:hilt-compiler:2.48")
 
     //State FLow
-    testImplementation("app.cash.turbine:turbine:0.13.0")
+    testImplementation("app.cash.turbine:turbine:1.0.0")
 }
