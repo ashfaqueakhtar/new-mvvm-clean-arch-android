@@ -57,16 +57,20 @@ class LoginViewModelTest {
         assertEquals(Status.IDLE, initialStatus)
     }
     @Test
-    fun `loginApiCall_inputApiCall_output_changeStatus`() = runTest{
+    fun `loginApiCall input apiCall output changeStatusSuccessWithModel`() = runTest{
 
         val inputLoginRequest = LoginRequest(
-            email = "error@example.com",
-            password = "wrongpassword"
+            email = "correct@example.com",
+            password = "correct"
+        )
+
+        val opLoginResponse = LoginResponse(
+            token = "token"
         )
 
         val mockResourceFlow : Flow<Resource<LoginResponse>> = flowOf(
             Resource.Loading(),
-            Resource.Success()
+            Resource.Success(data = opLoginResponse)
         )
 
         `when`(doLoginUseCase.execute(inputLoginRequest))
@@ -80,6 +84,36 @@ class LoginViewModelTest {
 
         assertEquals(Status.LOADING, results[0].status)
         assertEquals(Status.SUCCESS, results[1].status)
+        assertEquals(opLoginResponse, results[1].data)
+    }
 
+    @Test
+    fun loginApiCall_inputApiCall_output_changeStatusSucessWithNoModel() = runTest{
+
+        val inputLoginRequest = LoginRequest(
+            email = "wrong@example.com",
+            password = "wrongpassword"
+        )
+
+        val opLoginResponse = null
+
+        val mockResourceFlow : Flow<Resource<LoginResponse>> = flowOf(
+            Resource.Loading(),
+            Resource.Success(message = "auth failed", data = opLoginResponse)
+        )
+
+        `when`(doLoginUseCase.execute(inputLoginRequest))
+            .thenReturn(mockResourceFlow)
+
+        //execute
+        val resultFlow = doLoginUseCase.execute(inputLoginRequest)
+
+        // Collect and verify flow emissions
+        val results = resultFlow.toList()
+
+        assertEquals(Status.LOADING, results[0].status)
+        assertEquals(Status.SUCCESS, results[1].status)
+        assertEquals(opLoginResponse, results[1].data)
+        assertEquals("auth failed", results[1].message)
     }
 }
